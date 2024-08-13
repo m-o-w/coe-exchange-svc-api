@@ -50,9 +50,11 @@ public class ExchangeRateController {
             @RequestParam(required = false) String targetCurrency,
             @RequestParam(required = false) String date) {
 
+
         List<ExchangeRate> rates;
 
         if (targetCurrency != null && date != null) {
+            logger.info("INT101_FOREX_API: Request received for {}/{}/{}", baseCurrency, targetCurrency, date);
             // Query based on base currency, target currency, and date
             rates = exchangeRateRepository.findByBaseCurrencyAndTargetCurrencyAndDateInPayload(
                     "\"base_currency\": \"" + baseCurrency + "\"",
@@ -60,12 +62,14 @@ public class ExchangeRateController {
                     "\"date\": \"" + date + "\""
             );
         } else if (targetCurrency != null) {
+            logger.info("INT101_FOREX_API: Request received for {}/{}", baseCurrency, targetCurrency);
             // Query based on base currency and target currency
             rates = exchangeRateRepository.findByBaseCurrencyAndTargetCurrencyInPayload(
                     "\"base_currency\": \"" + baseCurrency + "\"",
                     "\"target_currency\": \"" + targetCurrency + "\""
             );
         } else if (date != null) {
+            logger.info("INT101_FOREX_API: Request received for {}/{}", baseCurrency, date);
             // Query based on base currency and date
             rates = exchangeRateRepository.findByBaseCurrencyAndDateInPayload(
                     "\"base_currency\": \"" + baseCurrency + "\"",
